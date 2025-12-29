@@ -1,6 +1,6 @@
 from .body_metrics import BodyMetrics
 from .energy_expenditure import EnergyExpenditure
-from .bioimpedance import Bioimpedance
+from .biopedance import Bioimpedance
 from .workout_calories import WorkoutCalories
 
 __all__ = [
