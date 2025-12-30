@@ -67,10 +67,27 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+lerna-debug.log*
 dist/
+dist-ssr/
 build/
 .next/
 out/
+*.local
+
+# Vite
+.vite/
+
+# Editor files
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Testing
+coverage/
+.nyc_output/
 
 # OS
 Thumbs.db
