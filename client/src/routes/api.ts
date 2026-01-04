@@ -1,7 +1,10 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'https://api.example.com',
-})
+  baseURL: 'https://kilocal-8fy9.onrender.com',
+  headers: {
+    'Content-Type': 'application/json',
+  }
+});
 
 export default api;
