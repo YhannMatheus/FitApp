@@ -28,5 +28,15 @@ class Settings(BaseSettings):
             return self.PROD_DATABASE_URL
         return self.DEV_DATABASE_URL
 
+    @property
+    def DATABASE_URL_CLEAN(self) -> str:
+        """Retorna a URL do banco de dados sem parâmetros incompatíveis com asyncpg"""
+        url = self.DATABASE_URL
+        # Remove parâmetros SSL incompatíveis com asyncpg
+        if "?" in url:
+            base_url = url.split("?")[0]
+            return base_url
+        return url
+
 
 settings = Settings()  # type: ignore
