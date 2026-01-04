@@ -1,8 +1,8 @@
-from datetime import date
+from datetime import date, datetime
 from enum import Enum
 from typing import TYPE_CHECKING
 
-from sqlalchemy import String, Date, Boolean, Enum as SQLEnum
+from sqlalchemy import String, Date, Boolean, Enum as SQLEnum, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.types.models.base import Base
@@ -39,6 +39,7 @@ class User(Base):
         SQLEnum(ActivityLevelEnum, name="activity_level_enum")
     )
     goal: Mapped[str]
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     body_assessments: Mapped[list["BodyAssessment"]] = relationship(
         back_populates="user", cascade="all, delete-orphan"
     )

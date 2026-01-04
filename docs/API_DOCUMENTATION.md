@@ -1,6 +1,7 @@
 # Documentação da API - KiloCal
 
 ## Índice
+- [Health Check & Métricas](#health-check--métricas)
 - [Autenticação](#autenticação)
 - [Usuários](#usuários)
 - [Treinos (Workouts)](#treinos-workouts)
@@ -8,6 +9,82 @@
 - [Séries (Sets)](#séries-sets)
 - [Modelos de Dados](#modelos-de-dados)
 - [Enumerações](#enumerações)
+
+---
+
+## Health Check & Métricas
+
+### GET `/health`
+Retorna métricas de desempenho e status da aplicação.
+
+**Headers:**
+- Nenhum (rota pública)
+
+**Resposta (200):**
+```json
+{
+  "status": "healthy | degraded",
+  "message": "string",
+  "system": {
+    "uptime_seconds": "float",
+    "current_time": "datetime (ISO 8601)",
+    "stage": "DEV | PROD",
+    "api_version": "string"
+  },
+  "database": {
+    "status": "connected | disconnected",
+    "connection_pool_size": "integer | null",
+    "response_time_ms": "float | null"
+  },
+  "users": {
+    "total_users": "integer",
+    "active_users_today": "integer",
+    "active_users_week": "integer",
+    "new_users_today": "integer",
+    "new_users_week": "integer"
+  },
+  "workouts": {
+    "total_workouts": "integer",
+    "workouts_today": "integer",
+    "workouts_week": "integer",
+    "total_calories_burned": "float",
+    "avg_workout_duration": "float | null"
+  }
+}
+```
+
+**Exemplo de Resposta:**
+```json
+{
+  "status": "healthy",
+  "message": "API está operacional",
+  "system": {
+    "uptime_seconds": 3600.45,
+    "current_time": "2026-01-04T15:30:00Z",
+    "stage": "DEV",
+    "api_version": "1.0.0"
+  },
+  "database": {
+    "status": "connected",
+    "connection_pool_size": 10,
+    "response_time_ms": 2.35
+  },
+  "users": {
+    "total_users": 150,
+    "active_users_today": 25,
+    "active_users_week": 87,
+    "new_users_today": 3,
+    "new_users_week": 12
+  },
+  "workouts": {
+    "total_workouts": 523,
+    "workouts_today": 45,
+    "workouts_week": 234,
+    "total_calories_burned": 125430.50,
+    "avg_workout_duration": null
+  }
+}
+```
 
 ---
 
