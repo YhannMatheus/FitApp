@@ -1,6 +1,6 @@
 import { View, Text } from "react-native";
 
-export default function dayCheckBox(){
+export default function DayCheckBox(){
     return(
         <View>
             

@@ -1,9 +1,6 @@
-import {View, Text} from 'react-native'
+import LoginScreen from "@/pages/login";
 
-export default function Index(){
-    return (
-        <View >
-            
-        </View>
-    )
-}   
+export default function App() {
+    // Retorne apenas o componente. O Expo Router cuidará do resto.
+    return <LoginScreen />;
+}
