@@ -40,8 +40,16 @@ class Password:
 
     @classmethod
     def hash(cls, raw: str) -> str:
-        return cls._context.hash(raw)
+        # Bcrypt tem limite de 72 bytes - truncar antes de processar
+        password_bytes = raw.encode("utf-8")[:72]
+        # Recodificar de volta para string de forma segura
+        safe_password = password_bytes.decode("utf-8", errors="ignore")
+        return cls._context.hash(safe_password)
 
     @classmethod
     def verify(cls, raw: str, hashed: str) -> bool:
-        return cls._context.verify(raw, hashed)
+        # Bcrypt tem limite de 72 bytes - truncar antes de processar
+        password_bytes = raw.encode("utf-8")[:72]
+        # Recodificar de volta para string de forma segura
+        safe_password = password_bytes.decode("utf-8", errors="ignore")
+        return cls._context.verify(safe_password, hashed)

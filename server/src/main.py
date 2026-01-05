@@ -1,10 +1,8 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.ext.asyncio import AsyncSession
 from src.routes import auth, user, workout, exercise, set
-from src.database.session import get_db
-from src.services.health_service import HealthService
-from src.types.schemas.health import HealthResponse
+from server.src.core.database.connection import configure_database
+from src.core.config import settings
 
 app = FastAPI(
     title="KiloCal API",
@@ -21,6 +19,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+database = configure_database(app, database_url=settings.DATABASE_URL)
+
 app.include_router(auth.router)
 app.include_router(user.router)
 app.include_router(workout.router)
@@ -32,8 +32,3 @@ app.include_router(set.router)
 def root():
     return {"message": "KiloCal API is running"}
 
-
-@app.get("/health", response_model=HealthResponse)
-async def health_check(db: AsyncSession = Depends(get_db)):
-
-    return await HealthService.get_health_metrics(db)

@@ -3,9 +3,9 @@ from sqlalchemy import select
 from typing import List, Optional
 from uuid import UUID
 
-from src.types.models.set import Set
-from src.types.models.exercise import Exercise
-from src.types.models.workout import Workout
+from src.types.models_old.set import Set
+from src.types.models_old.exercise import Exercise
+from src.types.models_old.workout import Workout
 from src.types.schemas.set import SetCreate, SetUpdate
 from src.core.calculations.workout_calories import WorkoutCalories
 
@@ -14,8 +14,8 @@ class SetService:
     @staticmethod
     async def create(
         db: AsyncSession,
-        exercise_id: UUID,
-        user_id: UUID,
+        exercise_id: int,
+        user_id: int,
         user_weight_kg: float,
         data: SetCreate,
     ) -> Set:

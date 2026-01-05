@@ -5,9 +5,9 @@ from typing import List, Optional
 from uuid import UUID
 from datetime import datetime
 
-from src.types.models.exercise import Exercise
-from src.types.models.set import Set
-from src.types.models.workout import Workout
+from src.types.models_old.exercise import Exercise
+from src.types.models_old.set import Set
+from src.types.models_old.workout import Workout
 from src.types.schemas.exercise import ExerciseCreate, ExerciseUpdate
 from src.core.calculations.workout_calories import WorkoutCalories
 
@@ -16,8 +16,8 @@ class ExerciseService:
     @staticmethod
     async def create(
         db: AsyncSession,
-        workout_id: UUID,
-        user_id: UUID,
+        workout_id: int,
+        user_id: int,
         user_weight_kg: float,
         data: ExerciseCreate,
     ) -> Exercise:

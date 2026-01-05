@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
-from src.types.models.user import User
-from src.types.models.workout import Workout
+from src.types.models_old.user import User
+from src.types.models_old.workout import Workout
 from src.types.schemas.health import (
     HealthResponse,
     SystemStats,
