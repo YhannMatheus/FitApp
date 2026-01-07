@@ -2,11 +2,11 @@ from pydantic import BaseModel, Field
 from datetime import datetime
 from uuid import UUID
 from typing import Optional
-from src.types.models.exercise import ExerciseTypeEnum, IntensityLevelEnum
+from src.types.enums.exercise import ExerciseTypeEnum, IntensityLevelEnum, ExercisseNameEnum
 
 
 class ExerciseBase(BaseModel):
-    name: str = Field(..., min_length=1, max_length=255)
+    name: ExercisseNameEnum
     type: ExerciseTypeEnum
     intensity: IntensityLevelEnum
 
@@ -16,7 +16,7 @@ class ExerciseCreate(ExerciseBase):
 
 
 class ExerciseUpdate(BaseModel):
-    name: Optional[str] = Field(None, min_length=1, max_length=255)
+    name: Optional[ExercisseNameEnum]
     type: Optional[ExerciseTypeEnum] = None
     intensity: Optional[IntensityLevelEnum] = None
 

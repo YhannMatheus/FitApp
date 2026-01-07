@@ -1,25 +1,11 @@
 from tortoise import Model, fields
-from enum import Enum
 from uuid import uuid4
-
-class GenderEnum(str, Enum):
-    MALE = "male"
-    FEMALE = "female"
-
-class ActivityLevelEnum(str, Enum):
-    SEDENTARY = "sedentary"
-    LIGHTLY_ACTIVE = "lightly_active"
-    MODERATELY_ACTIVE = "moderately_active"
-    VERY_ACTIVE = "very_active"
-    EXTRA_ACTIVE = "extra_active"
-
-class RoleEnum(str, Enum):
-    USER = "user"
-    ADMIN = "admin"
+from src.types.enums.user import GenderEnum, ActivityLevelEnum, RoleEnum
 
 class User(Model):
     id = fields.UUIDField(pk=True)
     email = fields.CharField(max_length=255, unique=True)
+    name = fields.CharField(max_length=255)
     hashed_password = fields.CharField(max_length=255)
     birth_date = fields.DateField()
     role = fields.CharEnumField(RoleEnum, default=RoleEnum.USER)
@@ -33,6 +19,6 @@ class User(Model):
     activates_at = fields.DatetimeField(null=True)
     created_at = fields.DatetimeField(auto_now_add=True)
     updated_at = fields.DatetimeField(auto_now=True)
-
+    
     class Meta:
         table = "users"

@@ -1,44 +1,19 @@
 from pydantic import BaseModel, EmailStr, Field
-from datetime import date, datetime
-from uuid import UUID
-from typing import Optional
-from src.types.models.user import GenderEnum, ActivityLevelEnum, RoleEnum
+from datetime import date as Date, datetime
+from typing import Optional, List
+from src.types.enums.user import GenderEnum, ActivityLevelEnum, RoleEnum
+from src.types.schemas.workout import WorkoutRead
+from src.types.schemas.body_assessment import BodyAssessmentBase
 
-
-class UserBase(BaseModel):
+class UserProfile(BaseModel):
+    token: str
     email: EmailStr
-    birth_date: date
+    name: str
+    birth_date: Date
     height_cm: float
     gender: GenderEnum
     activity_level: ActivityLevelEnum
-
-
-class UserCreate(UserBase):
-    password: str = Field(..., min_length=6)
-    goal: Optional[float] = None
-
-
-class UserUpdate(BaseModel):
-    email: Optional[EmailStr] = None
-    birth_date: Optional[date] = None
-    height_cm: Optional[float] = None
-    gender: Optional[GenderEnum] = None
-    activity_level: Optional[ActivityLevelEnum] = None
-    goal: Optional[float] = None
-
-
-class UserRead(UserBase):
-    id: UUID
     role: RoleEnum
-    goal: Optional[float]
-    activates_at: Optional[datetime]
     created_at: datetime
-    updated_at: datetime
-
-    class Config:
-        from_attributes = True
-
-
-class UserLogin(BaseModel):
-    email: EmailStr
-    password: str
+    workouts : List[WorkoutRead]
+    body_history: List[BodyAssessmentBase]

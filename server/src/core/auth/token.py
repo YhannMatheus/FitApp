@@ -1,17 +1,23 @@
-from datetime import datetime, timedelta
-from jose import jwt
+from datetime import datetime, timedelta, timezone
+from jose import jwt, JWTError
 from src.core.config import settings
-
+from fastapi import HTTPException, status
 
 class AccessToken:
-    def __init__(self, subject: str):
-        self.subject = subject
-
-    def generate(self) -> str:
+    @staticmethod
+    def generate(user_id: str, role: str, remember: bool) -> str:
+        if remember:
+            expire_time = timedelta(days=7)
+        else:
+            expire_time = timedelta(minutes=settings.JWT_EXPIRE_MINUTES)
+        
+        expire = datetime.now(timezone.utc) + expire_time
+        
         payload = {
-            "sub": self.subject,
-            "exp": datetime.utcnow()
-            + timedelta(minutes=settings.JWT_EXPIRE_MINUTES),
+            "sub": str(user_id), 
+            "role": role,        
+            "exp": expire,
+            "iat": datetime.now(timezone.utc)
         }
 
         return jwt.encode(
@@ -19,3 +25,20 @@ class AccessToken:
             settings.JWT_SECRET_KEY,
             algorithm=settings.JWT_ALGORITHM,
         )
+
+    @staticmethod
+    def decode(token: str) -> dict:
+        try:
+            payload = jwt.decode(
+                token,
+                settings.JWT_SECRET_KEY,
+                algorithms=[settings.JWT_ALGORITHM],
+            )
+            return payload
+        
+        except JWTError:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Could not validate credentials",
+                headers={"WWW-Authenticate": "Bearer"},
+            )

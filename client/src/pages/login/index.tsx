@@ -10,9 +10,12 @@ import {
 import { styles } from './styles';
 import { COLORS } from '@/theme';
 import { Input, Button } from '@/components';
+import { useNavigation } from '@react-navigation/native';
 
 
-export default function LoginScreen({ navigation }: any) {
+export default function LoginScreen() {
+  const navigation = useNavigation<any>();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -81,11 +84,13 @@ export default function LoginScreen({ navigation }: any) {
           {/* Rodapé de Registro */}
           <View style={styles.footer}>
             <Text style={styles.footerText}>Não tem uma conta? </Text>
-            <TouchableOpacity>
+
+            <TouchableOpacity onPress={() => navigation.navigate('register')}>
               <Text style={[styles.footerText, { color: COLORS.primary, fontWeight: 'bold' }]}>
                 Cadastre-se
               </Text>
             </TouchableOpacity>
+          
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

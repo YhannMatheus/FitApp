@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field
 from datetime import datetime
 from uuid import UUID
 from typing import Optional
-from src.types.models.workout import TrainingTypeEnum
+from src.types.enums.workout import TrainingTypeEnum
 
 
 class WorkoutBase(BaseModel):
@@ -13,7 +13,7 @@ class WorkoutBase(BaseModel):
 
 class WorkoutCreate(WorkoutBase):
     user_id: UUID
-
+    start_time: datetime
 
 class WorkoutUpdate(BaseModel):
     name: Optional[str] = Field(None, min_length=1, max_length=255)

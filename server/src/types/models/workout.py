@@ -1,12 +1,6 @@
 from tortoise import fields, Model
-from enum import Enum
 from uuid import uuid4
-
-class TrainingTypeEnum(str, Enum):
-    CARDIO = "cardio"
-    STRENGTH = "strength"
-    FLEXIBILITY = "flexibility"
-    BALANCE = "balance"
+from src.types.enums.workout import TrainingTypeEnum
 
 class Workout(Model):
     id = fields.UUIDField(pk=True)

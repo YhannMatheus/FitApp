@@ -1,6 +1,5 @@
 from typing import Dict, Optional
-from src.types.enums.user import SexEnum
-
+from src.types.enums.user import GenderEnum
 
 class Bioimpedance:
     @staticmethod
@@ -8,10 +7,10 @@ class Bioimpedance:
         return round(lean_mass_kg * 0.73, 2)
 
     @staticmethod
-    def calculate_ideal_weight_robinson(sex: SexEnum, height_cm: float) -> float:
+    def calculate_ideal_weight_robinson(sex: GenderEnum, height_cm: float) -> float:
         height_inches = height_cm / 2.54
 
-        if sex == SexEnum.male:
+        if sex == GenderEnum.MALE:
             ideal_weight_lbs = 52 + 1.9 * (height_inches - 60)
         else:
             ideal_weight_lbs = 49 + 1.7 * (height_inches - 60)
@@ -24,8 +23,8 @@ class Bioimpedance:
         return round(waist_cm / hip_cm, 2)
 
     @staticmethod
-    def classify_waist_to_hip_ratio(ratio: float, sex: SexEnum) -> str:
-        if sex == SexEnum.male:
+    def classify_waist_to_hip_ratio(ratio: float, sex: GenderEnum) -> str:
+        if sex == GenderEnum.MALE:
             if ratio < 0.90:
                 return "Baixo risco"
             elif ratio < 1.0:

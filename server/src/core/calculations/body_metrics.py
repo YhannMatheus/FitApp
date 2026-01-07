@@ -1,8 +1,9 @@
+import math
 from datetime import date
 from typing import Optional
-from src.types.enums.user import SexEnum
+from src.types.enums.user import GenderEnum
 from src.types.enums.calculations import BodyFatFormulaEnum
-import math
+
 
 
 class BodyMetrics:
@@ -23,14 +24,14 @@ class BodyMetrics:
 
     @staticmethod
     def calculate_body_fat_navy(
-        sex: SexEnum,
+        sex: GenderEnum,
         waist_cm: float,
         neck_cm: float,
         height_cm: float,
         hip_cm: Optional[float] = None,
     ) -> float:
 
-        if sex == SexEnum.male:
+        if sex == GenderEnum.MALE:
             body_fat = (
                 495
                 / (

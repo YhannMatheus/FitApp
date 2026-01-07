@@ -1,23 +1,9 @@
 from tortoise import fields, Model
-from enum import Enum
-
-class ExerciseTypeEnum(str, Enum):
-    BACK = "back"
-    CHEST = "chest"
-    LEGS = "legs"
-    ARMS = "arms"
-    SHOULDERS = "shoulders"
-    ABDOMEN = "abdomen"
-
-class IntensityLevelEnum(str, Enum):
-    LOW = "low"
-    MEDIUM = "medium"
-    HIGH = "high"
-    VERY_HIGH = "very_high"
+from src.types.enums.exercise import ExerciseTypeEnum, IntensityLevelEnum, ExercisseNameEnum
 
 class Exercisse(Model):
     id = fields.UUIDField(pk=True)
-    name = fields.CharField(max_length=255)
+    name = fields.CharEnumField(ExercisseNameEnum)
     workout = fields.ForeignKeyField("models.Workout", related_name="exercises", on_delete=fields.CASCADE)
     type = fields.CharEnumField(ExerciseTypeEnum)
     intensity = fields.CharEnumField(IntensityLevelEnum)
