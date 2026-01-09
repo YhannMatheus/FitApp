@@ -5,14 +5,11 @@ from typing import Optional
 from src.types.enums.exercise import ExerciseTypeEnum, IntensityLevelEnum, ExercisseNameEnum
 
 
-class ExerciseBase(BaseModel):
+class ExerciseCreate(BaseModel):
+    workout_id: UUID
     name: ExercisseNameEnum
     type: ExerciseTypeEnum
     intensity: IntensityLevelEnum
-
-
-class ExerciseCreate(ExerciseBase):
-    workout_id: UUID
 
 
 class ExerciseUpdate(BaseModel):
@@ -21,9 +18,12 @@ class ExerciseUpdate(BaseModel):
     intensity: Optional[IntensityLevelEnum] = None
 
 
-class ExerciseRead(ExerciseBase):
+class ExerciseRead(BaseModel):
     id: UUID
     workout_id: UUID
+    name: ExercisseNameEnum
+    type: ExerciseTypeEnum
+    intensity: IntensityLevelEnum
     calories_burned: float
     created_at: datetime
 

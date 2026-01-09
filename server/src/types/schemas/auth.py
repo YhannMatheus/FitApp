@@ -12,7 +12,7 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     user_id: Optional[UUID] = None
     email: Optional[str] = None
-    role: RoleEnum
+    role: RoleEnum = RoleEnum.USER
 
 
 class LoginRequest(BaseModel):
@@ -28,21 +28,3 @@ class RegisterRequest(BaseModel):
     height_cm: float
     gender: GenderEnum
     activity_level: ActivityLevelEnum
-
-
-class PasswordChange(BaseModel):
-    current_password: str
-    new_password: str
-
-
-class PasswordReset(BaseModel):
-    email: EmailStr
-
-
-class PasswordResetConfirm(BaseModel):
-    token: str
-    new_password: str
-
-
-class RefreshToken(BaseModel):
-    refresh_token: str

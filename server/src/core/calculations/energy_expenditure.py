@@ -1,21 +1,21 @@
-from src.types.enums.user import SexEnum, ActivityLevelEnum
+from src.types.enums.user import GenderEnum, ActivityLevelEnum
 from src.types.enums.calculations import BMRFormulaEnum
 
 
 class EnergyExpenditure:
     ACTIVITY_MULTIPLIERS = {
-        ActivityLevelEnum.sedentary: 1.2,
-        ActivityLevelEnum.lightly_active: 1.375,
-        ActivityLevelEnum.moderately_active: 1.55,
-        ActivityLevelEnum.very_active: 1.725,
-        ActivityLevelEnum.athlete: 1.9,
+        ActivityLevelEnum.SEDENTARY: 1.2,
+        ActivityLevelEnum.LIGHTLY_ACTIVE: 1.375,
+        ActivityLevelEnum.MODERATELY_ACTIVE: 1.55,
+        ActivityLevelEnum.VERY_ACTIVE: 1.725,
+        ActivityLevelEnum.ATHLETE: 1.9,
     }
 
     @staticmethod
     def calculate_bmr_harris_benedict(
-        sex: SexEnum, weight_kg: float, height_cm: float, age: int
+        sex: GenderEnum, weight_kg: float, height_cm: float, age: int
     ) -> float:
-        if sex == SexEnum.male:
+        if sex == GenderEnum.MALE:
             bmr = 88.362 + (13.397 * weight_kg) + (4.799 * height_cm) - (5.677 * age)
         else:
             bmr = 447.593 + (9.247 * weight_kg) + (3.098 * height_cm) - (4.330 * age)
@@ -24,11 +24,11 @@ class EnergyExpenditure:
 
     @staticmethod
     def calculate_bmr_mifflin(
-        sex: SexEnum, weight_kg: float, height_cm: float, age: int
+        sex: GenderEnum, weight_kg: float, height_cm: float, age: int
     ) -> float:
         bmr = (10 * weight_kg) + (6.25 * height_cm) - (5 * age)
 
-        if sex == SexEnum.male:
+        if sex == GenderEnum.MALE:
             bmr += 5
         else:
             bmr -= 161
@@ -37,7 +37,7 @@ class EnergyExpenditure:
 
     @staticmethod
     def calculate_bmr(
-        sex: SexEnum,
+        sex: GenderEnum,
         weight_kg: float,
         height_cm: float,
         age: int,

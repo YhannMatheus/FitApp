@@ -9,12 +9,6 @@ class GenderEnum(str, Enum):
     FEMALE = "female"
 
 
-class SexEnum(str, Enum):
-    """Sexo biológico para cálculos (alias para GenderEnum)"""
-    MALE = "male"
-    FEMALE = "female"
-
-
 class ActivityLevelEnum(str, Enum):
     """Nível de atividade física do usuário"""
     SEDENTARY = "sedentary"

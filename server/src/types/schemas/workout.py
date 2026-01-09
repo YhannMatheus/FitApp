@@ -5,15 +5,12 @@ from typing import Optional
 from src.types.enums.workout import TrainingTypeEnum
 
 
-class WorkoutBase(BaseModel):
+class WorkoutCreate(BaseModel):
+    user_id: UUID
     name: str = Field(..., min_length=1, max_length=255)
     type: TrainingTypeEnum
     start_time: datetime
 
-
-class WorkoutCreate(WorkoutBase):
-    user_id: UUID
-    start_time: datetime
 
 class WorkoutUpdate(BaseModel):
     name: Optional[str] = Field(None, min_length=1, max_length=255)
@@ -21,9 +18,12 @@ class WorkoutUpdate(BaseModel):
     end_time: Optional[datetime] = None
 
 
-class WorkoutRead(WorkoutBase):
+class WorkoutRead(BaseModel):
     id: UUID
     user_id: UUID
+    name: str = Field(..., min_length=1, max_length=255)
+    type: TrainingTypeEnum
+    start_time: datetime
     total_calories_burned: float
     end_time: Optional[datetime]
     create_at: datetime

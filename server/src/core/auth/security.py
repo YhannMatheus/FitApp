@@ -1,42 +1,14 @@
 from passlib.context import CryptContext
-from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from jose import jwt, JWTError
-from src.core.config import settings
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 
-async def get_current_user(
-    token: str = Depends(oauth2_scheme)
-):
-    from src.services.user_services import UserService
-
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    try:
-        payload = jwt.decode(
-            token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM]
-        )
-        user_id_str = payload.get("sub")
-        if user_id_str is None:
-            raise credentials_exception
-    except JWTError:
-        raise credentials_exception
-    user = await UserService.get_by_id(user_id_str)
-    if user is None:
-        raise credentials_exception
-    return user
-
-
-class Password:
+class Authenticate:
     _context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+    _oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
     @classmethod
-    def hash(cls, raw: str) -> str:
+    def hash_password(cls, raw: str) -> str:
+        """Hash a password using bcrypt"""
         # Bcrypt tem limite de 72 bytes - truncar antes de processar
         password_bytes = raw.encode("utf-8")[:72]
         # Recodificar de volta para string de forma segura
@@ -44,7 +16,8 @@ class Password:
         return cls._context.hash(safe_password)
 
     @classmethod
-    def verify(cls, raw: str, hashed: str) -> bool:
+    def verify_password(cls, raw: str, hashed: str) -> bool:
+        """Verify a password against a hash"""
         # Bcrypt tem limite de 72 bytes - truncar antes de processar
         password_bytes = raw.encode("utf-8")[:72]
         # Recodificar de volta para string de forma segura

@@ -4,7 +4,7 @@ from src.types.models.body_assessments import BodyAssessment
 from src.types.schemas.workout import WorkoutRead
 from src.types.schemas.user import UserProfile
 from src.types.models.workout import Workout
-from src.core.auth.security import Password
+from src.core.auth.security import Authenticate
 from src.core.auth.token import AccessToken
 from fastapi import HTTPException, status
 from src.types.models.user import User
@@ -17,7 +17,7 @@ class UserService:
                 status_code=status.HTTP_400_BAD_REQUEST, detail="Email already in use"
             )
 
-        hashed_password = Password.hash(data.password)
+        hashed_password = Authenticate.hash_password(data.password)
 
         user = await User.create(
             name=data.name,
@@ -29,10 +29,10 @@ class UserService:
             activity_level=data.activity_level,
         )
 
-        return AccessToken.generate(str(user.id), user.role, remember=True)
+        return AccessToken.generate(str(user.id), user.role.value, remember=True)
 
     @staticmethod
-    async def get_user(data: LoginRequest, remember: bool):
+    async def get_user(data: LoginRequest, remember: bool) -> str:
         user = await User.get_or_none(email=data.email)
         
         invalid_auth_exception = HTTPException(
@@ -41,10 +41,10 @@ class UserService:
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-        if not user or not Password.verify(data.password, user.hashed_password):
+        if not user or not Authenticate.verify_password(data.password, user.hashed_password):
             raise invalid_auth_exception
 
-        return AccessToken.generate(str(user.id), user.role, remember)
+        return AccessToken.generate(str(user.id), user.role.value, remember)
 
     @staticmethod
     async def get_by_id(user_id: str) -> User:
@@ -58,7 +58,7 @@ class UserService:
     @staticmethod
     async def get_user_profile(token: str):
         token_data = AccessToken.decode(token)
-        user_id = token_data.get("sub") or token_data.get("user_id")
+        user_id = token_data.user_id
 
         user = await User.get_or_none(id=user_id)
 

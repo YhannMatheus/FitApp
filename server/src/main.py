@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from src.routes import user, workout, exercise, set
+from src.routes import user
 from src.core.database.connection import configure_database
 from src.core.config import settings
 
@@ -19,7 +19,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-database = configure_database(app, database_url=settings.DATABASE_URL)
+database = configure_database(app)
 
 app.include_router(user.router)
 #app.include_router(workout.router)

@@ -17,3 +17,12 @@ class UserProfile(BaseModel):
     created_at: datetime
     workouts : List[WorkoutRead]
     body_history: List[BodyAssessmentBase]
+
+class UserRead(BaseModel):
+    id: str
+    email: EmailStr
+    name: str
+    birth_date: Date
+    height_cm: float
+    gender: GenderEnum
+    activity_level: ActivityLevelEnum
