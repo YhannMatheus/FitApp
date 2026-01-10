@@ -1,6 +1,6 @@
 from fastapi import HTTPException, status
 from src.types.models.session import Session
-from src.types.schemas.session import SessionBase
+from src.types.schemas.session import *
 from datetime import datetime, timezone, timedelta
 from uuid import UUID
 
@@ -44,7 +44,6 @@ class SessionService:
         
     @staticmethod
     async def get_session(userId: str) -> SessionBase:
-        # Converter userId de string para UUID
         user_uuid = UUID(userId)
         
         session = await Session.filter(user_id=user_uuid).first()

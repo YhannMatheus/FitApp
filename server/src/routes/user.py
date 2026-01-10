@@ -1,8 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from src.services.user_services import UserService
 from src.types.schemas.auth import *
+from src.types.schemas.user import *
 from src.services.session_services import SessionService
 from src.core.auth.token import AccessToken
+from src.types.models.user import User
 
 router = APIRouter(prefix="/user", tags=["User"])
 
@@ -58,3 +60,24 @@ async def register(data: RegisterRequest) -> Token:
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"An error occurred while processing your request. Error: {str(e)}",
         )
+
+@router.get("/profile", response_model=UserProfile)
+async def profile(request: Request) -> UserProfile:
+    try:
+        user: User = request.state.user
+        
+        profile = await UserService.get_user_profile(str(user.id))
+        
+        return profile
+        
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        import traceback
+        error_detail = traceback.format_exc()
+        print(f"\n{'='*80}\nPROFILE ERROR:\n{error_detail}\n{'='*80}\n")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"An error occurred while processing your request. Error: {str(e)}",
+        )
+    

@@ -6,6 +6,7 @@ from src.types.schemas.user import UserRead
 
 class BodyAssessmentBase(BaseModel):
     id : UUID
+    user_id: UUID
     weight_kg: float = Field(..., gt=0, description="Peso total no dia da avaliação")
     height_cm: float = Field(..., gt=0, description="Altura no momento")
     waist_cm: Optional[float] = Field(None, gt=0)
@@ -42,7 +43,6 @@ class BodyAssessmentReed(BaseModel):
     created_at: datetime
 
 class BodyAssessmentCreate(BaseModel):
-    user : UserRead
     weight_kg: float = Field(..., gt=0, description="Peso total no dia da avaliação")
     height_cm: float = Field(..., gt=0, description="Altura no momento")
     waist_cm: Optional[float] = Field(None, gt=0)
@@ -59,3 +59,35 @@ class BodyAssessmentCreate(BaseModel):
     fold_subscapular: Optional[float] = Field(None, ge=0)
     fold_suprailiac: Optional[float] = Field(None, ge=0)
     fold_midaxillary: Optional[float] = Field(None, ge=0)
+
+class WeigthGraphPoint(BaseModel):
+    date: datetime
+    weight_kg: float
+
+class BFPGraphPoint(BaseModel):
+    date: datetime
+    bfp: float
+
+class BMIGraphPoint(BaseModel):
+    date: datetime
+    bmi: float
+
+class BMRGraphPoint(BaseModel):
+    date: datetime
+    bmr: float
+
+class TDEEGraphPoint(BaseModel):
+    date: datetime
+    tdee: float
+
+class LFMassGraphPoint(BaseModel):
+    date: datetime
+    lean_mass_kg: float
+    fat_mass_kg: float
+
+class BodyAssessmentGraphs(BaseModel):
+    bfp_graph: list[BFPGraphPoint]
+    bmi_graph: list[BMIGraphPoint]
+    tdee_graph: list[TDEEGraphPoint]
+    lf_mass_graph: list[LFMassGraphPoint]
+    weight_graph: list[WeigthGraphPoint]

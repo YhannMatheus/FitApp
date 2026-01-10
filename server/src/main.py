@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from src.routes import user
 from src.core.database.connection import configure_database
-from src.core.config import settings
+from src.core.middlewares.auth_middleware import AuthMiddleware
 
 app = FastAPI(
     title="KiloCal API",
@@ -13,11 +13,13 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:3000",
+                   "https://kilocal-8fy9.onrender.com"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(AuthMiddleware)
 
 database = configure_database(app)
 
